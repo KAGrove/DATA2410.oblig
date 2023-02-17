@@ -14,14 +14,7 @@ while True:
 		message = connectionSocket.recv(1024).decode()
 		filename = message.split()[1]
 		print("F:", filename)
-		if filename == "/":
-			print("if")
-			filename = "/index.html"
-		else:
-			print("else")
-			print("F2", filename)
-			filename = filename[1:]
-			print("F3", filename)
+		filename = filename[1:]
 		f = open(filename)
 		print("try 2")
 		outputdata = f.read()
@@ -35,8 +28,6 @@ while True:
 		print("etter header")
 
 		for i in range(0, len(outputdata)):
-			print("O:", outputdata)
-			print("Inni skeleton-løkken")
 			connectionSocket.send(outputdata[i].encode()) 
 		connectionSocket.send("\r\n".encode())
 		connectionSocket.close()
