@@ -1,0 +1,1 @@
+Åpne en nettleser og kjør: http://127.0.0.1:12000/index.html
