@@ -1,29 +1,23 @@
+import sys
 import socket
 
-server_ip = "127.0.0.1"
-server_port = 12000
+if len(sys.argv) < 4:
+    print("Usage: client.py server_host server_port filename")
+    sys.exit()
 
-# Open a connection to the server
-client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-client_socket.connect((server_ip, server_port))
+server_host = sys.argv[1]
+server_port = int(sys.argv[2])
+filename = sys.argv[3]
 
-# Send an HTTP GET request
-request = "GET /index.html HTTP/1.1\r\nHost: {}\r\n\r\n".format(server_ip)
-client_socket.sendall(request.encode())
+clientSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+clientSocket.connect((server_host, server_port))
 
-# Receive the response
-response = b""
-while True:
-    data = client_socket.recv(1024)
-    if not data:
-        break
-    response += data
+http_request = "GET /{} HTTP/1.1\r\nHost: {}\r\n\r\n".format(filename, server_host)
+clientSocket.send(http_request.encode())
 
-# Parse the response and extract the data
-response_str = response.decode()
-header, body = response_str.split("\r\n\r\n", 1)
-print(header)
-print(body)
+response = clientSocket.recv(1024)
+while response:
+    print(response.decode(), end='')
+    response = clientSocket.recv(1024)
 
-# Close the connection
-client_socket.close()
+clientSocket.close()
