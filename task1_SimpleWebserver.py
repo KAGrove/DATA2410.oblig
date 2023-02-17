@@ -1,45 +1,52 @@
-#import socket module
 from socket import *
-import sys # In order to terminate the program
-serverSocket = socket(AF_INET, SOCK_STREAM) 
+import sys
+serverSocket = socket(AF_INET, SOCK_STREAM)
 
-#Prepare a sever socket
-#Write your code here
+serverPort = 12000
+serverSocket.bind(('127.0.0.1', serverPort))
+serverSocket.listen(1)
 
-#End of your code
 while True:
-	#Establish the connection print('Ready to serve...') connectionSocket, addr = 
+	print("Ready to serve...")
 	try:
-		#Write your code here
-
-		#End of your code
-		message = #Write your code here #End of your code 
+		print("try 1")
+		connectionSocket, addr = serverSocket.accept()
+		message = connectionSocket.recv(1024).decode()
 		filename = message.split()[1]
-		f = open(filename[1:])
-		outputdata = #Write your code here #End of your code 
+		print("F:", filename)
+		if filename == "/":
+			print("if")
+			filename = "/index.html"
+		else:
+			print("else")
+			print("F2", filename)
+			filename = filename[1:]
+			print("F3", filename)
+		f = open(filename)
+		print("try 2")
+		outputdata = f.read()
+		f.close()
 
-		#Send one HTTP header line into socket
-		#Write your code here
+		# HTTP response headers
+		print("Før header")
+		header = 'HTTP/1.1 200 OK\r\n'
+		header += 'Content-Type: text/html\r\n\r\n'
+		connectionSocket.send(header.encode())
+		print("etter header")
 
-		#End of your code
-
-		#Send the content of the requested file to the client 
 		for i in range(0, len(outputdata)):
+			print("O:", outputdata)
+			print("Inni skeleton-løkken")
 			connectionSocket.send(outputdata[i].encode()) 
 		connectionSocket.send("\r\n".encode())
 		connectionSocket.close()
 
-
 	except IOError:
-		#Send response message for file not found
-    	#Write your code here
+		print("Erroren")
+		connectionSocket.send("HTTP/2.2 404 Not found\r\n\r\n".encode())
+		connectionSocket.close()
+		continue
 
-    	#End of your code
-		
-		#Close client socket
-        
-        #Write your code here
-		
-		#End of your code
+print("Til slutt")
 serverSocket.close()
-sys.exit()#Terminate the program after sending the corresponding data
+sys.exit()
