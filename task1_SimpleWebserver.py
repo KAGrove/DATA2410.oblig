@@ -12,9 +12,9 @@ while True:
 		print("try 1")
 		connectionSocket, addr = serverSocket.accept()
 		message = connectionSocket.recv(1024).decode()
-		filename = message.split()[1]
+		filename = message.split()[1]		# Henter det andre elementet i message, som er HTTP/GET-request
 		print("F:", filename)
-		filename = filename[1:]
+		filename = filename[1:]				# Fjerner skråstrek foran linken som mottas
 		f = open(filename)
 		print("try 2")
 		outputdata = f.read()
