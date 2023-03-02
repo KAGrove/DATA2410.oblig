@@ -6,12 +6,15 @@ import _thread as thread
 # Men det var viktig å flytte dem inn i ulike funksjoner, slik at handle_requests kan bli kalt hver gang
 # en ny klient kobler seg på.
 
+# Tar inn serverSocket fra main (som er en lyttende socket som har bundet ip og port sammen)
 def listen_for_clients(connection):
     while True:
         connectionSocket, addr = connection.accept()                    # Her mottar de et nytt port-nummer
         thread.start_new_thread(handle_requests, (connectionSocket,))   # komma -> tuple med ett element
 
 
+# Tar i mot connectionSocket fra listen_for_clients, som har blitt akseptert og fått nytt port-nummer.
+# Inni denne funksjonen mottas melding om filnavn fra klienten, headeren sendes, så sendes resten tilbake til klienten.
 def handle_requests(connectionSocket):
     while True:
         try:
