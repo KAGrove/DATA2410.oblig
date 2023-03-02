@@ -37,7 +37,8 @@ while True:
 
 	except IOError:
 		print("Erroren")
-		connectionSocket.send("HTTP/2.2 404 Not found\r\n\r\n".encode())
+		# Først format som sendes, så html til nettleseren
+		connectionSocket.send("HTTP/2.2 404 Not found\r\n\r\n <html> Feil side!  </html>".encode())
 		connectionSocket.close()
 		continue
 
