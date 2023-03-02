@@ -2,10 +2,13 @@ from socket import *
 import sys
 import _thread as thread
 
+# Dette er omtrent akkurat de samme linjene kode som i den enkle serveren, kun linjen med thread som er ny.
+# Men det var viktig å flytte dem inn i ulike funksjoner, slik at handle_requests kan bli kalt hver gang
+# en ny klient kobler seg på.
 
 def listen_for_clients(connection):
     while True:
-        connectionSocket, addr = connection.accept()
+        connectionSocket, addr = connection.accept()                    # Her mottar de et nytt port-nummer
         thread.start_new_thread(handle_requests, (connectionSocket,))   # komma -> tuple med ett element
 
 
@@ -46,5 +49,6 @@ def main():
     serverSocket.close()
 
 
+# Gjør at vi automatisk går inn i main ved oppstart
 if __name__ == '__main__':
     main()

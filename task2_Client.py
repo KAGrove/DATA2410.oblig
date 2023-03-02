@@ -22,15 +22,14 @@ http_request = "GET /{} HTTP/1.1\r\nHost: {}\r\n\r\n".format(filename, server_ho
 # GET /index.html HTTP/1.1
 # Host: 127.0.0.1
 
-clientSocket.send(http_request.encode())
 # Sender http request-en til serveren
+clientSocket.send(http_request.encode())
 
+# Mottar headeren
 response = clientSocket.recv(1024)
-# Mottar serverens response
-print("response:", response)                        # Mottar headeren
-print("response decoded:", response.decode())
 
-while response:                                     # Mottar (.recv) 1 gang for hver sending (.send)
+# Mottar (.recv) 1 gang for hver sending (.send)
+while response:
     print(response.decode(), end='')
     response = clientSocket.recv(1024)
 

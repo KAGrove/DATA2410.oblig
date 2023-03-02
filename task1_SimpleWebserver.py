@@ -22,14 +22,14 @@ while True:
 		header += 'Content-Type: text/html\r\n\r\n'
 		connectionSocket.send(header.encode())
 
-		for i in range(0, len(outputdata)):
+		for i in range(0, len(outputdata)):					# Sender alt fra index.html til klienten
 			connectionSocket.send(outputdata[i].encode()) 
 		connectionSocket.send("\r\n".encode())
 		connectionSocket.close()
 
 	except IOError:
 		print("Error")
-		# Først format som sendes, så html til nettleseren
+		# Først format som sendes, så html til nettleseren:
 		connectionSocket.send("HTTP/2.2 404 Not found\r\n\r\n <html> Feil side!  </html>".encode())
 		connectionSocket.close()
 		continue
