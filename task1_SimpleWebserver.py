@@ -11,16 +11,19 @@ while True:
 	try:
 		print("try 1")
 		connectionSocket, addr = serverSocket.accept()
-		message = connectionSocket.recv(1024).decode()
-		filename = message.split()[1]		# Henter det andre elementet i message, som er HTTP/GET-request
+		message = connectionSocket.recv(1024).decode()		# message = GET /index.html HTTP/1.1 Host: localhost
+		print("message:", message)
+		filename = message.split()[1]		# Henter det andre elementet i message
 		print("F:", filename)
 		filename = filename[1:]				# Fjerner skråstrek foran linken som mottas
+		print("F2", filename)
 		f = open(filename)
-		print("try 2")
-		outputdata = f.read()
+		print("f:", f)
+		outputdata = f.read()				# Det som klienten skal motta (om noen linjer)
+		print("outputdata:", outputdata)
 		f.close()
 
-		# HTTP response headers
+		# HTTP response headers - Dette bare sender "header" til klienten, ikke essensielt for overføringen
 		print("Før header")
 		header = 'HTTP/1.1 200 OK\r\n'
 		header += 'Content-Type: text/html\r\n\r\n'
